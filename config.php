@@ -1,5 +1,9 @@
 <?php
 
+define('BOT_TOKEN', '');
+define('CHAT_ID', '');
+define('OWNER_ID', '');
+
 use Illuminate\Database\Capsule\Manager as Capsule;
 $capsule = new Capsule;
 $capsule->addConnection([
@@ -14,6 +18,3 @@ $capsule->addConnection([
 ]);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
-
-define('CHAT_ID', '');
-define('OWNER_ID', '');
