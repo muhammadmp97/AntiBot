@@ -1,0 +1,14 @@
+{
+    "name": "webpajooh/antibot",
+    "description": "This bot prevents other bots from sending messages in your group.",
+    "authors": [
+        {
+            "name": "webpajooh",
+            "email": "webpajooh@gmail.com"
+        }
+    ],
+    "require": {
+        "webpajooh/telebot": "^1.1",
+        "illuminate/database": "^8.14"
+    }
+}
