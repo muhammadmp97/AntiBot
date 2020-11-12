@@ -12,8 +12,7 @@ if ($tg->chat->id != CHAT_ID) {
     $tg->leaveChat(['chat_id' => $tg->chat->id]);
 }
 
-$user = $tg->getChatMember(['chat_id' => CHAT_ID, 'user_id' => $tg->user->id]);
-$userIsAdmin = in_array($user->status, ['creator', 'administrator']);
+$userIsAdmin = in_array(($tg->getChatMember(['chat_id' => CHAT_ID, 'user_id' => $tg->user->id]))->status, ['creator', 'administrator']);
 $dbUser = User::firstWhere('tg_id', $tg->user->id);
 
 try {
@@ -55,29 +54,26 @@ try {
         exit;
     }
 
-    $tg->listen('!ban', function () use ($tg) {
+    $tg->listen('!ban', function () use ($tg, $userIsAdmin) {
         $user = $tg->message->reply_to_message->from;
-        $senderInfo = $tg->getChatMember(['chat_id' => CHAT_ID, 'user_id' => $tg->user->id]);
 
-        if (in_array($senderInfo->status, ['creator', 'administrator'])) {
+        if ($userIsAdmin) {
             $tg->kickChatMember(['chat_id' => CHAT_ID, 'user_id' => $user->id]);
         }
     });
 
-    $tg->listen('!unban', function () use ($tg) {
+    $tg->listen('!unban', function () use ($tg, $userIsAdmin) {
         $user = $tg->message->reply_to_message->from;
-        $senderInfo = $tg->getChatMember(['chat_id' => CHAT_ID, 'user_id' => $tg->user->id]);
 
-        if (in_array($senderInfo->status, ['creator', 'administrator'])) {
+        if ($userIsAdmin) {
             $tg->unbanChatMember(['chat_id' => CHAT_ID, 'user_id' => $user->id]);
         }
     });
 
-    $tg->listen('!mute', function () use ($tg) {
+    $tg->listen('!mute', function () use ($tg, $userIsAdmin) {
         $user = $tg->message->reply_to_message->from;
-        $senderInfo = $tg->getChatMember(['chat_id' => CHAT_ID, 'user_id' => $tg->user->id]);
 
-        if (in_array($senderInfo->status, ['creator', 'administrator'])) {
+        if ($userIsAdmin) {
             $tg->restrictChatMember([
                 'chat_id' => CHAT_ID,
                 'user_id' => $user->id,
@@ -86,11 +82,10 @@ try {
         }
     });
 
-    $tg->listen('!unmute', function () use ($tg) {
+    $tg->listen('!unmute', function () use ($tg, $userIsAdmin) {
         $user = $tg->message->reply_to_message->from;
-        $senderInfo = $tg->getChatMember(['chat_id' => CHAT_ID, 'user_id' => $tg->user->id]);
 
-        if (in_array($senderInfo->status, ['creator', 'administrator'])) {
+        if ($userIsAdmin) {
             $tg->restrictChatMember([
                 'chat_id' => CHAT_ID,
                 'user_id' => $user->id,
