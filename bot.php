@@ -18,6 +18,19 @@ try {
             $tg->kickChatMember(['chat_id' => CHAT_ID, 'user_id' => $user->id]);
         }
     });
+
+    $tg->listen('!mute', function () use ($tg) {
+        $user = $tg->message->reply_to_message->from;
+        $senderInfo = $tg->getChatMember(['chat_id' => CHAT_ID, 'user_id' => $tg->user->id]);
+
+        if (in_array($senderInfo->status, ['creator', 'administrator'])) {
+            $tg->restrictChatMember([
+                'chat_id' => CHAT_ID,
+                'user_id' => $user->id,
+                'permissions' => '{}'
+            ]);
+        }
+    });
 } catch (Exception $e) {
     tl($e->getMessage());
 }
