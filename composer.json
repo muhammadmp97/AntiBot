@@ -12,6 +12,9 @@
         "illuminate/database": "^8.14"
     },
     "autoload": {
+        "psr-4": {
+            "Bot\\": "Bot/"
+        },
         "files": ["config.php"]
     }
 }
